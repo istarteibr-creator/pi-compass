@@ -12,13 +12,17 @@ export async function submitToSheet(
   }
 
   try {
+    const payload = JSON.stringify({
+      ...answers,
+      overallScore,
+      maturityLevel,
+    });
+
     const response = await fetch(APPS_SCRIPT_URL, {
       method: "POST",
-      body: JSON.stringify({
-        ...answers,
-        overallScore,
-        maturityLevel,
-      }),
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: payload,
     });
 
     if (!response.ok) {
