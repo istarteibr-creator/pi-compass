@@ -57,6 +57,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        survey: {
+          progress: "hsl(var(--survey-progress))",
+          highlight: "hsl(var(--survey-highlight))",
+          success: "hsl(var(--survey-success))",
+          warning: "hsl(var(--survey-warning))",
+          danger: "hsl(var(--survey-danger))",
+          "card-hover": "hsl(var(--survey-card-hover))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
