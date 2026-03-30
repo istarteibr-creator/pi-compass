@@ -71,6 +71,14 @@ const Index = () => {
     return generateReport(answers);
   }, [showReport, answers]);
 
+  const submittedRef = useRef(false);
+  useEffect(() => {
+    if (report && !submittedRef.current) {
+      submittedRef.current = true;
+      submitToSheet(answers, report.overallScore, report.maturityLevel);
+    }
+  }, [report, answers]);
+
   if (report && showReport) {
     return (
       <div className="min-h-screen bg-background py-8 px-4">
