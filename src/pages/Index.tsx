@@ -1,6 +1,7 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { surveyQuestions } from "@/lib/surveyData";
 import { generateReport } from "@/lib/reportGenerator";
+import { submitToSheet } from "@/lib/submitToSheet";
 import SurveyQuestion from "@/components/SurveyQuestion";
 import DiagnosticReport from "@/components/DiagnosticReport";
 import ConsentModal from "@/components/ConsentModal";
@@ -69,6 +70,14 @@ const Index = () => {
     if (!showReport) return null;
     return generateReport(answers);
   }, [showReport, answers]);
+
+  const submittedRef = useRef(false);
+  useEffect(() => {
+    if (report && !submittedRef.current) {
+      submittedRef.current = true;
+      submitToSheet(answers, report.overallScore, report.maturityLevel);
+    }
+  }, [report, answers]);
 
   if (report && showReport) {
     return (
