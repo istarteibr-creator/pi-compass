@@ -25,11 +25,7 @@ export async function submitToSheet(
       body: payload,
     });
 
-    if (!response.ok) {
-      console.error("Sheet submission failed:", response.status);
-      return false;
-    }
-
+    // With no-cors, response is opaque — we assume success if no error thrown
     return true;
   } catch (error) {
     console.error("Sheet submission error:", error);
