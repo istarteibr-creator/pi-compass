@@ -13,7 +13,19 @@ export async function submitToSheet(
 
   try {
     const payload = JSON.stringify({
-      ...answers,
+      q1: answers.q1_porte || "",
+      q2: answers.q2_setor || "",
+      q3: answers.q3_tempo || "",
+      q4: answers.q4_conhecimento || "",
+      q5: answers.q5_junta_vs_inpi || "",
+      q6: answers.q6_busca_info || "",
+      q7: answers.q7_marca_inpi || "",
+      q8: answers.q8_segredo || "",
+      q9: answers.q9_nda || "",
+      q10: answers.q10_inovacao || "",
+      q11: answers.q11_pesquisa_previa || "",
+      q12: answers.q12_planejamento || "",
+      q13: answers.q13_valor || "",
       overallScore,
       maturityLevel,
     });
