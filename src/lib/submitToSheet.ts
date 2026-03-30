@@ -12,20 +12,20 @@ export async function submitToSheet(
   }
 
   try {
-    const response = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        ...answers,
-        overallScore,
-        maturityLevel,
-      }),
+    const payload = JSON.stringify({
+      ...answers,
+      overallScore,
+      maturityLevel,
     });
 
-    if (!response.ok) {
-      console.error("Sheet submission failed:", response.status);
-      return false;
-    }
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: payload,
+    });
 
+    // With no-cors, response is opaque — we assume success if no error thrown
     return true;
   } catch (error) {
     console.error("Sheet submission error:", error);
