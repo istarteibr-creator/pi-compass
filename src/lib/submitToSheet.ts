@@ -1,5 +1,5 @@
 // Replace this URL with your deployed Google Apps Script Web App URL
-const APPS_SCRIPT_URL = "";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyweav_8ff9xig4EpCIReafeyO75MbD57t9xwaiYgXJpiHJWp0HOLsjAgyAjSVNYDjA/exec";
 
 export async function submitToSheet(
   answers: Record<string, string>,
