@@ -58,10 +58,10 @@ export const surveyQuestions: SurveyQuestion[] = [
     blockDescription: "Avalie seu nível de conhecimento e conscientização sobre Propriedade Intelectual.",
     question: "Como você avalia o seu conhecimento sobre Propriedade Intelectual (Marcas, Patentes, etc.)?",
     options: [
-      { value: "nulo", label: "Nulo — Nunca ouvi falar ou não sei o que é" },
-      { value: "basico", label: "Básico — Já ouvi falar, mas não sei como aplicar" },
-      { value: "intermediario", label: "Intermediário — Conheço os conceitos principais e sua importância" },
-      { value: "avancado", label: "Avançado — Já protegi ativos e utilizo estrategicamente" },
+      { value: "nulo", label: "Nunca ouvi falar ou não sei o que é" },
+      { value: "basico", label: "Já ouvi falar, mas não sei como aplicar" },
+      { value: "intermediario", label: "Conheço os conceitos principais e sua importância" },
+      { value: "avancado", label: "Já protegi ativos e utilizo estrategicamente" },
     ],
   },
   {
