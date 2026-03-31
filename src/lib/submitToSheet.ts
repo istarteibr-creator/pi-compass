@@ -21,6 +21,10 @@ export async function submitToSheet(
   }
 
   try {
+    const recsText = report.recommendations
+      .map((r) => `[${r.priority}] ${r.title}: ${r.action}`)
+      .join(" | ");
+
     const payload = JSON.stringify({
       q1: answers.q1_porte || "",
       q2: answers.q2_setor || "",
@@ -35,8 +39,15 @@ export async function submitToSheet(
       q11: answers.q11_pesquisa_previa || "",
       q12: answers.q12_planejamento || "",
       q13: answers.q13_valor || "",
-      overallScore,
-      maturityLevel,
+      overallScore: report.overallScore,
+      maturityLevel: report.maturityLevel,
+      sensingScore: report.sensingScore,
+      seizingScore: report.seizingScore,
+      transformingScore: report.transformingScore,
+      porte: report.profileSummary.porte,
+      setor: report.profileSummary.setor,
+      tempo: report.profileSummary.tempo,
+      recommendations: recsText,
     });
 
     const response = await fetch(APPS_SCRIPT_URL, {

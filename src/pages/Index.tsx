@@ -75,7 +75,7 @@ const Index = () => {
   useEffect(() => {
     if (report && !submittedRef.current) {
       submittedRef.current = true;
-      submitToSheet(answers, report.overallScore, report.maturityLevel);
+      submitToSheet(answers, report);
     }
   }, [report, answers]);
 
