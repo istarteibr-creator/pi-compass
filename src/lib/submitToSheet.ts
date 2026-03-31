@@ -1,10 +1,19 @@
 // Replace this URL with your deployed Google Apps Script Web App URL
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyweav_8ff9xig4EpCIReafeyO75MbD57t9xwaiYgXJpiHJWp0HOLsjAgyAjSVNYDjA/exec";
 
+interface ReportData {
+  overallScore: number;
+  maturityLevel: string;
+  sensingScore: number;
+  seizingScore: number;
+  transformingScore: number;
+  recommendations: { priority: string; title: string; description: string; action: string }[];
+  profileSummary: { porte: string; setor: string; tempo: string };
+}
+
 export async function submitToSheet(
   answers: Record<string, string>,
-  overallScore: number,
-  maturityLevel: string
+  report: ReportData
 ): Promise<boolean> {
   if (!APPS_SCRIPT_URL) {
     console.warn("Google Apps Script URL not configured. Skipping submission.");
@@ -12,6 +21,10 @@ export async function submitToSheet(
   }
 
   try {
+    const recsText = report.recommendations
+      .map((r) => `[${r.priority}] ${r.title}: ${r.action}`)
+      .join(" | ");
+
     const payload = JSON.stringify({
       q1: answers.q1_porte || "",
       q2: answers.q2_setor || "",
@@ -26,8 +39,15 @@ export async function submitToSheet(
       q11: answers.q11_pesquisa_previa || "",
       q12: answers.q12_planejamento || "",
       q13: answers.q13_valor || "",
-      overallScore,
-      maturityLevel,
+      overallScore: report.overallScore,
+      maturityLevel: report.maturityLevel,
+      sensingScore: report.sensingScore,
+      seizingScore: report.seizingScore,
+      transformingScore: report.transformingScore,
+      porte: report.profileSummary.porte,
+      setor: report.profileSummary.setor,
+      tempo: report.profileSummary.tempo,
+      recommendations: recsText,
     });
 
     const response = await fetch(APPS_SCRIPT_URL, {
