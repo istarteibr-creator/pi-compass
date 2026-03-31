@@ -64,6 +64,7 @@ const Index = () => {
     setAnswers({});
     setCurrentIndex(0);
     setShowReport(false);
+    submittedRef.current = false;
   };
 
   const report = useMemo(() => {
