@@ -1,5 +1,5 @@
 // Replace this URL with your deployed Google Apps Script Web App URL
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyweav_8ff9xig4EpCIReafeyO75MbD57t9xwaiYgXJpiHJWp0HOLsjAgyAjSVNYDjA/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAKTShmPbBO_3ST-eu8AQDH_zIBoqwhMOeShdhicmigxVgxP_VYXPCrxyqNFfrNvUi/exec";
 
 interface ReportData {
   overallScore: number;
