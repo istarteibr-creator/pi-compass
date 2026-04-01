@@ -11,6 +11,46 @@ interface ReportData {
   profileSummary: { porte: string; setor: string; tempo: string };
 }
 
+const answerFieldMap = [
+  ["q1", "q1_porte"],
+  ["q2", "q2_setor"],
+  ["q3", "q3_tempo"],
+  ["q4", "q4_conhecimento"],
+  ["q5", "q5_junta_vs_inpi"],
+  ["q6", "q6_busca_info"],
+  ["q7", "q7_marca_inpi"],
+  ["q8", "q8_segredo"],
+  ["q9", "q9_nda"],
+  ["q10", "q10_inovacao"],
+  ["q11", "q11_pesquisa_previa"],
+  ["q12", "q12_planejamento"],
+  ["q13", "q13_valor"],
+] as const;
+
+function buildSheetPayload(answers: Record<string, string>, report: ReportData) {
+  const recommendationText = report.recommendations
+    .map((recommendation) => `[${recommendation.priority}] ${recommendation.title}: ${recommendation.action}`)
+    .join(" | ");
+
+  const answerPayload = Object.fromEntries(
+    answerFieldMap.map(([sheetKey, answerKey]) => [sheetKey, answers[answerKey] || ""])
+  );
+
+  return {
+    timestamp: new Date().toISOString(),
+    ...answerPayload,
+    overallScore: report.overallScore,
+    maturityLevel: report.maturityLevel,
+    sensingScore: report.sensingScore,
+    seizingScore: report.seizingScore,
+    transformingScore: report.transformingScore,
+    recommendations: recommendationText,
+    porteLabel: report.profileSummary.porte,
+    setorLabel: report.profileSummary.setor,
+    tempoLabel: report.profileSummary.tempo,
+  };
+}
+
 export async function submitToSheet(
   answers: Record<string, string>,
   report: ReportData
@@ -21,40 +61,17 @@ export async function submitToSheet(
   }
 
   try {
-    const recsText = report.recommendations
-      .map((r) => `[${r.priority}] ${r.title}: ${r.action}`)
-      .join(" | ");
+    const payload = buildSheetPayload(answers, report);
 
-    const payload = JSON.stringify({
-      q1: answers.q1_porte || "",
-      q2: answers.q2_setor || "",
-      q3: answers.q3_tempo || "",
-      q4: answers.q4_conhecimento || "",
-      q5: answers.q5_junta_vs_inpi || "",
-      q6: answers.q6_busca_info || "",
-      q7: answers.q7_marca_inpi || "",
-      q8: answers.q8_segredo || "",
-      q9: answers.q9_nda || "",
-      q10: answers.q10_inovacao || "",
-      q11: answers.q11_pesquisa_previa || "",
-      q12: answers.q12_planejamento || "",
-      q13: answers.q13_valor || "",
-      overallScore: report.overallScore,
-      maturityLevel: report.maturityLevel,
-      sensingScore: report.sensingScore,
-      seizingScore: report.seizingScore,
-      transformingScore: report.transformingScore,
-      recommendations: recsText,
-    });
-
-    const response = await fetch(APPS_SCRIPT_URL, {
+    await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: payload,
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
+      keepalive: true,
     });
 
-    // With no-cors, response is opaque — we assume success if no error thrown
+    console.info("Sheet submission dispatched", payload);
     return true;
   } catch (error) {
     console.error("Sheet submission error:", error);
